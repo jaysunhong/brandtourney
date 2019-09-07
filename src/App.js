@@ -1,26 +1,143 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Menu, Icon, Switch, Layout, Typography } from 'antd';
+import Home from './components/Home';
+import './style/styles.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+const { Header, Footer, Sider, Content } = Layout;
+const { SubMenu } = Menu;
+const { Title } = Typography;
+
+class App extends React.Component {
+  state = {
+    theme: 'dark',
+    current: '1',
+  };
+
+  styles = {
+    content: {
+      backgroundColor: 'black'
+    },
+    footer: {
+      backgroundColor: 'black'
+    },
+    layout: {
+      textAlign: 'center',
+      body: {backgroundColor: 'black'}
+    }
+  };
+
+  changeTheme = value => {
+    this.setState({
+      theme: value ? 'dark' : 'light',
+    });
+  };
+
+  handleClick = e => {
+    console.log('click', e);
+    this.setState({
+      current: e.key,
+    });
+  };
+
+  startGame = () => {
+    
+  }
+  
+  render() {
+    return (
+      <React.Fragment>
+        <Layout
+          style={this.styles.layout}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <Sider
+            style={{
+              overflow: 'auto',
+              height: '100vh',
+              position: 'fixed',
+              left: 0,
+            }}
+          >
+            <Switch
+              checked={this.state.theme === 'dark'}
+              onChange={this.changeTheme}
+              checkedChildren='Dark'
+              unCheckedChildren='Light'
+            />
+            <br />
+            <br />
+            <Menu
+              theme={this.state.theme}
+              onClick={this.handleClick}
+              style={{ width: 256 }}
+              defaultOpenKeys={['sub1']}
+              selectedKeys={[this.state.current]}
+              mode='inline'
+            >
+              <SubMenu
+                key='sub1'
+                title={
+                  <span>
+                    <Icon type='mail' />
+                    <span>Navigation One</span>
+                  </span>
+                }
+              >
+                <Menu.Item style={this.state.current === this.key ? this.styles.buttonActive : ''} key='1'>Option 1</Menu.Item>
+                <Menu.Item key='2'>Option 2</Menu.Item>
+                <Menu.Item key='3'>Option 3</Menu.Item>
+                <Menu.Item key='4'>Option 4</Menu.Item>
+              </SubMenu>
+
+              <SubMenu
+                key='sub2'
+                title={
+                  <span>
+                    <Icon type='appstore' />
+                    <span>Navigation Two</span>
+                  </span>
+                }
+              >
+                <Menu.Item key='5'>Option 5</Menu.Item>
+                <Menu.Item key='6'>Option 6</Menu.Item>
+                <SubMenu key='sub3' title='Submenu'>
+                  <Menu.Item key='7'>Option 7</Menu.Item>
+                  <Menu.Item key='8'>Option 8</Menu.Item>
+                </SubMenu>
+              </SubMenu>
+
+              <SubMenu
+                key='sub4'
+                title={
+                  <span>
+                    <Icon type ='setting' />
+                    <span>Navigation Three</span>
+                  </span>
+                }
+              >
+                <Menu.Item key='9'>Option 9</Menu.Item>
+                <Menu.Item key='10'>Option 10</Menu.Item>
+                <Menu.Item key='11'>Option 11</Menu.Item>
+                <Menu.Item key='12'>Option 12</Menu.Item>
+              </SubMenu>
+            </Menu>
+          </Sider>
+
+          <Layout>
+            <Header>
+              <Title style={{ color: 'white' }}>Brand Tourney</Title>
+            </Header>
+
+            <Content
+              style={this.styles.content}
+            >
+              <Home onClick={this.startGame} />
+            </Content>
+            <Footer>Footer</Footer>
+          </Layout>
+        </Layout>
+      </React.Fragment>
+    )
+  }
 }
 
 export default App;
